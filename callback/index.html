@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>EMG Connect: Authorization</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<h1>EMG Connect authorization</h1>
+<p id="msg">Waiting for authorization response...</p>
+<p><textarea id="url" rows="4" style="width:100%" readonly></textarea></p>
+<p><button id="copy" hidden>Copy</button></p>
+<p>Copy the full text above and paste it into the terminal where EMG Connect asked for it. It only works once and is useless without the app's client secret. Do not share it.</p>
+<script>
+  var u = location.href;
+  if (location.search.indexOf("code=") !== -1) {
+    document.getElementById("msg").textContent = "Authorization received.";
+    document.getElementById("url").value = u;
+    var b = document.getElementById("copy");
+    b.hidden = false;
+    b.onclick = function () { navigator.clipboard.writeText(u); b.textContent = "Copied"; };
+  } else if (location.search.indexOf("error=") !== -1) {
+    document.getElementById("msg").textContent = "Authorization failed: " + new URLSearchParams(location.search).get("error");
+  }
+</script>
+</body>
+</html>
